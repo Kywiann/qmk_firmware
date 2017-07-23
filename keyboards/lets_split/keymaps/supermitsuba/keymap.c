@@ -155,6 +155,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool TOG_STATUS = false;
 int RGB_current_mode;
+int RGB_current_hue;
 
 // Setting ADJUST layer RGB back to default
 void update_tri_layer_RGB(uint8_t layer1, uint8_t layer2, uint8_t layer3) {
@@ -177,20 +178,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         persistent_default_layer_set(1UL<<_QWERTY);
         rgblight_mode(RGB_current_mode);
+        rgblight_sethsv(RGB_current_hue, rgblight_config.sat, rgblight_config.val);
       }
       return false;
       break;
     case COLEMAK:
       if (record->event.pressed) {
         persistent_default_layer_set(1UL<<_COLEMAK);
-        rgblight_mode(1);
+        rgblight_mode(RGB_current_mode);
+        rgblight_sethsv(RGB_current_hue, rgblight_config.sat, rgblight_config.val);
       }
       return false;
       break;
     case DVORAK:
       if (record->event.pressed) {
         persistent_default_layer_set(1UL<<_DVORAK);
-        rgblight_mode(1);
+        rgblight_mode(RGB_current_mode);
+        rgblight_sethsv(RGB_current_hue, rgblight_config.sat, rgblight_config.val);
       }
       return false;
       break;
@@ -200,11 +204,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         } else {
           TOG_STATUS = !TOG_STATUS;
           rgblight_mode(16);
+          rgblight_sethsv(220, rgblight_config.sat, rgblight_config.val);
         }
         layer_on(_LOWER);
         update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
       } else {
         rgblight_mode(RGB_current_mode);   // revert RGB to initial mode prior to RGB mode change
+        rgblight_sethsv(RGB_current_hue, rgblight_config.sat, rgblight_config.val);
         TOG_STATUS = false;
         layer_off(_LOWER);
         update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
@@ -217,11 +223,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         } else {
           TOG_STATUS = !TOG_STATUS;
           rgblight_mode(15);
+          rgblight_sethsv(359, rgblight_config.sat, rgblight_config.val);
         }
         layer_on(_RAISE);
         update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
       } else {
         rgblight_mode(RGB_current_mode);   // revert RGB to initial mode prior to RGB mode change
+        rgblight_sethsv(RGB_current_hue, rgblight_config.sat, rgblight_config.val);
         TOG_STATUS = false;
         layer_off(_RAISE);
         update_tri_layer_RGB(_LOWER, _RAISE, _ADJUST);
@@ -242,10 +250,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         } else {
           TOG_STATUS = !TOG_STATUS;
           rgblight_mode(5);
+          rgblight_sethsv(29, rgblight_config.sat, rgblight_config.val);
         }
       } else {
         rgblight_mode(RGB_current_mode);  // revert RGB to initial mode prior to RGB mode change
         TOG_STATUS = false;
+        rgblight_sethsv(RGB_current_hue, rgblight_config.sat, rgblight_config.val);
       }
       break;
     case RGB_MOD:
@@ -258,6 +268,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       return false;
+      break;
+    case RGB_HUD:
+      RGB_current_hue = rgblight_config.hue;
+      break;
+    case RGB_HUI:
+      RGB_current_hue = rgblight_config.hue;
       break;
     case RED:
       rgblight_mode(5);
