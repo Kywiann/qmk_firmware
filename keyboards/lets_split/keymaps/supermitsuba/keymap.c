@@ -2,6 +2,7 @@
 #include "flip_keymap.h"
 #include "action_layer.h"
 #include "eeconfig.h"
+#include <stdlib.h>
 
 extern keymap_config_t keymap_config;
 
@@ -251,6 +252,48 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           TOG_STATUS = !TOG_STATUS;
           rgblight_mode(5);
           rgblight_sethsv(29, rgblight_config.sat, rgblight_config.val);
+        }
+      } else {
+        rgblight_mode(RGB_current_mode);  // revert RGB to initial mode prior to RGB mode change
+        TOG_STATUS = false;
+        rgblight_sethsv(RGB_current_hue, rgblight_config.sat, rgblight_config.val);
+      }
+      break;
+    case KC_LALT:
+      if (record->event.pressed) {
+        if (TOG_STATUS) { //TOG_STATUS checks is another reactive key currently pressed, only changes RGB mode if returns false
+        } else {
+          TOG_STATUS = !TOG_STATUS;
+          rgblight_mode(1);
+          rgblight_sethsv(55, rgblight_config.sat, rgblight_config.val);
+        }
+      } else {
+        rgblight_mode(RGB_current_mode);  // revert RGB to initial mode prior to RGB mode change
+        TOG_STATUS = false;
+        rgblight_sethsv(RGB_current_hue, rgblight_config.sat, rgblight_config.val);
+      }
+      break;
+    case KC_LGUI:
+      if (record->event.pressed) {
+        if (TOG_STATUS) { //TOG_STATUS checks is another reactive key currently pressed, only changes RGB mode if returns false
+        } else {
+          TOG_STATUS = !TOG_STATUS;
+          rgblight_mode(1);
+          rgblight_sethsv(280, rgblight_config.sat, rgblight_config.val);
+        }
+      } else {
+        rgblight_mode(RGB_current_mode);  // revert RGB to initial mode prior to RGB mode change
+        TOG_STATUS = false;
+        rgblight_sethsv(RGB_current_hue, rgblight_config.sat, rgblight_config.val);
+      }
+      break;
+    case KC_LCTL:
+      if (record->event.pressed) {
+        if (TOG_STATUS) { //TOG_STATUS checks is another reactive key currently pressed, only changes RGB mode if returns false
+        } else {
+          TOG_STATUS = !TOG_STATUS;
+          rgblight_mode(1);
+          rgblight_sethsv(100, rgblight_config.sat, rgblight_config.val);
         }
       } else {
         rgblight_mode(RGB_current_mode);  // revert RGB to initial mode prior to RGB mode change
