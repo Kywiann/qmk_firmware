@@ -20,6 +20,10 @@ extern rgblight_config_t rgblight_config;
 #define _NUMPAD 5
 #define _ADJUST 16
 
+int randomInt(int max) {
+  return rand() % max; // returns a pseudo-random integer between 0 and RAND_MAX
+}
+
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
   COLEMAK,
@@ -300,6 +304,54 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         TOG_STATUS = false;
         rgblight_sethsv(RGB_current_hue, rgblight_config.sat, rgblight_config.val);
       }
+      break;
+    case KC_BSPC:
+    case KC_LEFT:
+    case KC_RGHT:
+    case KC_UP:
+    case KC_DOWN:
+    case KC_DEL:
+    case KC_TAB:
+    case KC_ENT:
+    case KC_SPC:
+      if (record->event.pressed) {
+        if (TOG_STATUS) { //TOG_STATUS checks is another reactive key currently pressed, only changes RGB mode if returns false
+        } else {
+          TOG_STATUS = !TOG_STATUS;
+          rgblight_mode(1);
+          rgblight_sethsv(randomInt(359), rgblight_config.sat, rgblight_config.val);
+        }
+      } else {
+        rgblight_mode(RGB_current_mode);  // revert RGB to initial mode prior to RGB mode change
+        TOG_STATUS = false;
+        rgblight_sethsv(RGB_current_hue, rgblight_config.sat, rgblight_config.val);
+      }
+      break;
+   case KC_A:
+  case KC_B:
+  case KC_C:
+  case KC_D:
+  case KC_E:
+  case KC_F:
+  case KC_G:
+  case KC_H:
+  case KC_I:
+  case KC_K:
+  case KC_L:
+  case KC_M:
+  case KC_N:
+  case KC_O:
+  case KC_P:
+  case KC_Q:
+  case KC_R:
+  case KC_S:
+  case KC_T:
+  case KC_U:
+  case KC_V:
+  case KC_W:
+  case KC_X:
+  case KC_Y:
+  case KC_Z:
       break;
     case RGB_MOD:
       if (record->event.pressed) {
