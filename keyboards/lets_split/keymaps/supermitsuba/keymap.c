@@ -38,12 +38,23 @@ enum custom_keycodes {
   GREY,
   GREEN,
   GOLD, 
-  SOLID
+  SOLID,
+  DYNAMIC_MACRO_RANGE
 };
 
 // Fillers to make layering more clear
 #define _______ KC_TRNS
 #define XXXXXXX KC_NO
+
+// this is called when dynamic macro buffer is full
+void backlight_toggle(void) {
+  // INSERT CODE HERE: for example, call function to turn on indicator LED.
+
+  rgblight_mode(5);
+  rgblight_sethsv(350, rgblight_config.sat, rgblight_config.val);
+}
+
+#include "dynamic_macro.h"
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -55,14 +66,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |Ctrl  | GUI  |Alt   |Raise |Lower |Space |Space |esc   | Left | Down |  Up  |Right |
+ * |Ctrl  | GUI  |Alt   |Raise |Lower |Space |Space |esc   |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = KEYMAP( \
   KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,  \
   ADJUST,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,  \
   KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT ,  \
-  KC_LCTL, KC_LGUI, KC_LALT, RAISE,   LOWER,   KC_SPC,  KC_SPC,  KC_ESC,  KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT  \
+  KC_LCTL, KC_LGUI, KC_LALT, RAISE,   LOWER,   KC_SPC,  KC_SPC,  KC_ESC,  _______, _______, _______, DYN_REC_STOP  \
 ),
 
 /* Colemak
@@ -113,10 +124,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_LOWER] = KEYMAP( \
-  KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC,  \
-  KC_GRV,  _______, _______, _______, _______, _______, _______, KC_MINS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE,    \
-  _______, _______, _______, _______, _______, _______, _______, KC_UNDS,  KC_EQL, KC_LBRC, KC_RBRC, KC_BSLS,   \
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ \
+  KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC,         KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC,  \
+  KC_GRV,  _______, _______, _______, _______, _______, DYN_REC_START1,  KC_MINS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE,    \
+  _______, _______, _______, _______, _______, _______, DYN_MACRO_PLAY1, KC_UNDS,  KC_EQL, KC_LBRC, KC_RBRC, KC_BSLS,   \
+  _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______ \
 ),
 
 /* Raise
@@ -141,7 +152,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |      | Reset|      |      |      |      |      |      |  up  |      |      |  Del |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |Aud on|Audoff|AGnorm|AGswap|      |      |left  |down  |right |      |      |
+ * |      |      |      |AGnorm|AGswap|      |      |left  |down  |right |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |RGBTOG|RGBMOD|RGBHUD|RGBHUI|RGBSAD|      |RGBSAI|RGBVAD|RGBVAI|      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -149,10 +160,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_ADJUST] =  KEYMAP( \
-  _______, RESET,   _______, _______, _______, _______, _______, _______, KC_UP,   _______, _______, KC_DEL, \
-  _______, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, \
-  _______, RGB_TOG, RGB_MOD, RGB_HUD, RGB_HUI, RGB_SAD, _______, RGB_SAI, RGB_VAD, RGB_VAI, _______, _______, \
-  GOLD,    GREEN,   GREY,    BLUE,    RED,     ORANGE,  SOLID,   _______, QWERTY,  COLEMAK, DVORAK,  _______ \
+  _______,   RESET,   _______, _______, _______, _______, _______, _______, KC_UP,   _______, _______, KC_DEL, \
+  _______, _______,   _______, AG_NORM, AG_SWAP, _______, _______, KC_LEFT, KC_DOWN, KC_RGHT, _______, _______, \
+  _______, RGB_TOG,   RGB_MOD, RGB_HUD, RGB_HUI, RGB_SAD, _______, RGB_SAI, RGB_VAD, RGB_VAI, _______, _______, \
+  GOLD,      GREEN,   GREY,    BLUE,    RED,     ORANGE,  SOLID,   _______, QWERTY,  COLEMAK, DVORAK,  _______ \
 )
 
 
@@ -178,6 +189,10 @@ void persistent_default_layer_set(uint16_t default_layer) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  if (!process_record_dynamic_macro(keycode, record)) {
+    return false;
+  }
+
   switch (keycode) {
     case QWERTY:
       if (record->event.pressed) {
