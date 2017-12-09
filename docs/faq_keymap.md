@@ -1,11 +1,22 @@
-# Frequently Asked Keymap Questions
+# Keymap FAQ
 
-This page covers questions people often have about keymaps. If you haven't you should read [Keymap Overview](keymap.html) first.
+This page covers questions people often have about keymaps. If you haven't you should read [Keymap Overview](keymap.md) first.
 
 ## What Keycodes Can I Use?
-See [Basic Keycodes](keycodes.html) and [Quantum Keycodes](quantum_keycodes.html) for most of the keys you can define.
+See [Keycodes](keycodes.md) for an index of keycodes available to you. These link to more extensive documentation when available.
 
 Keycodes are actually defined in [common/keycode.h](https://github.com/qmk/qmk_firmware/blob/master/tmk_core/common/keycode.h).
+
+## What Are The Default Keycodes?
+
+There are 3 standard keyboard layouts in use around the world- ANSI, ISO, and JIS. North America primarily uses ANSI, Europe and Africa primarily use ISO, and Japan uses JIS. Regions not mentioned typically use either ANSI or ISO. The keycodes corresponding to these layouts are shown here:
+
+<!-- Source for this image: http://www.keyboard-layout-editor.com/#/gists/9ce023dc6caadc0cf11c88c782350a8c -->
+![Keyboard Layout Image](https://i.imgur.com/45m4mRf.png)
+
+## The Menu Key Isn't Working
+
+The key found on most modern keyboards that is located between `KC_RGUI` and `KC_RCTL` is actually called `KC_APP`. This is because when that key was invented there was already a key named `MENU` in the relevant standards, so MS chose to call that the `APP` key.
 
 ## `KC_SYSREQ` isn't working
 Use keycode for Print Screen(`KC_PSCREEN` or `KC_PSCR`) instead of `KC_SYSREQ`. Key combination of 'Alt + Print Screen' is recognized as 'System request'.
@@ -114,9 +125,9 @@ https://github.com/tmk/tmk_keyboard/issues/213
 https://github.com/tekezo/Karabiner/issues/403
 
 
-## Esc and `~ on a key
+## Esc and `~ on a single key
 
-Use `GRAVE_ESC` or `KC_GESC` in your keymap.
+See the [Grave Escape](feature_grave_escape.md) feature.
 
 ## Arrow on Right Modifier keys with Dual-Role
 This turns right modifer keys into arrow keys when the keys are tapped while still modifiers when the keys are hold. In TMK the dual-role function is dubbed **TAP**.

@@ -2,7 +2,7 @@
 
 For a lot of people a custom keyboard is about more than sending button presses to your computer. You want to be able to do things that are more complex than simple button presses and macros. QMK has hooks that allow you to inject code, override functionality, and otherwise customize how your keyboard behaves in different situations. 
 
-This page does not assume any special knowledge about QMK, but reading [Understanding QMK](understanding_qmk.html) will help you understand what is going on at a more fundamental level.
+This page does not assume any special knowledge about QMK, but reading [Understanding QMK](understanding_qmk.md) will help you understand what is going on at a more fundamental level.
 
 ## A Word on Core vs Keyboards vs Keymap
 
@@ -36,7 +36,7 @@ enum my_keycodes {
 
 ## Programming The Behavior Of Any Keycode
 
-When you want to override the behavior of an existing key, or define the behavior for a new key, you should use the `process_record_kb()' and `process_record_user()` functions. These are called by QMK during key processing before the actual key event is handled. If these functions return `true` QMK will process the keycodes as usual. That can be handy for extending the functionality of a key rather than replacing it. If these functions return `false` QMK will skip the normal key handling, and it will be up you to send any key up or down events that are required.
+When you want to override the behavior of an existing key, or define the behavior for a new key, you should use the `process_record_kb()` and `process_record_user()` functions. These are called by QMK during key processing before the actual key event is handled. If these functions return `true` QMK will process the keycodes as usual. That can be handy for extending the functionality of a key rather than replacing it. If these functions return `false` QMK will skip the normal key handling, and it will be up you to send any key up or down events that are required.
 
 These function are called every time a key is pressed or released.
 
