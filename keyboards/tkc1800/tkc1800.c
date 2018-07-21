@@ -44,7 +44,7 @@ void led_init_ports(void) {
 }
 
 void led_set_kb(uint8_t usb_led) {
-//    led_set_user(usb_led);
+   led_set_user(usb_led);
 	if (usb_led & (1<<USB_LED_NUM_LOCK)) {
         // Turn numlock on
 		PORTD |= (1<<2);
