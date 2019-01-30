@@ -8,12 +8,11 @@
 #ifndef I2C_SLAVE_H
 #define I2C_SLAVE_H
 
-volatile uint8_t buffer_address;
-volatile uint8_t txbuffer[0xFF];
-volatile uint8_t rxbuffer[0xFF];
+#define I2C_SLAVE_REG_COUNT 30
 
-void i2c_init(uint8_t address);
-void i2c_stop(void);
-ISR(TWI_vect);
+extern volatile uint8_t i2c_slave_reg[I2C_SLAVE_REG_COUNT];
+
+void i2c_slave_init(uint8_t address);
+void i2c_slave_stop(void);
 
 #endif // I2C_SLAVE_H
